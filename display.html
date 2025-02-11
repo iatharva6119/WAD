@@ -1,0 +1,82 @@
+<!-- Updated display.html -->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Display Registration Data</title>
+    <link rel="stylesheet" href="styles.css">
+    <style>
+        body {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+        h2 {
+            text-align: center;
+            margin-bottom: 20px;
+        }
+        table {
+            width: 80%;
+            border-collapse: collapse;
+            margin-top: 10px;
+        }
+        th, td {
+            border: 1px solid #ddd;
+            padding: 8px;
+            text-align: left;
+        }
+        th {
+            background-color: #f2f2f2;
+        }
+        tr:nth-child(even) {
+            background-color: #f9f9f9;
+        }
+        tr:hover {
+            background-color: #ddd;
+        }
+    </style>
+</head>
+<body>
+    
+    <h2>Registration Data</h2>
+
+<table>
+    <thead>
+        <tr>
+            <th>Name</th>
+            <th>Email</th>
+            <th>Mobile Number</th>
+            <th>Address</th>
+            <th>City</th>
+            <th>Hobbies</th>
+            <th>Gender</th>
+        </tr>
+    </thead>
+    <tbody id="dataBody">
+    </tbody>
+</table>
+
+<script>
+    document.addEventListener("DOMContentLoaded", function() {
+        let entries = JSON.parse(localStorage.getItem("registrations")) || [];
+        let tableBody = document.getElementById("dataBody");
+    
+        entries.forEach(entry => {
+            let row = document.createElement("tr");
+            row.innerHTML = `<td>${entry.name}</td>
+                             <td>${entry.email}</td>
+                             <td>${entry.mobile}</td>
+                             <td>${entry.address}</td>
+                             <td>${entry.city}</td>
+                             <td>${entry.hobbies}</td>
+                             <td>${entry.gender}</td>`;
+            tableBody.appendChild(row);
+        });
+    });
+    </script>
+    
+    
+
+</body>
+</html>

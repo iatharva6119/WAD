@@ -1,0 +1,121 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Registration Form</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            background-color: #f4f4f4;
+        }
+        .registration-container {
+            background: white;
+            padding: 50px;
+            border-radius: 10px;
+            box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.1);
+            width: 500px;
+            text-align: center;
+        }
+        input, textarea, select {
+            width: 100%;
+            padding: 10px;
+            margin: 8px 0;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+        }
+        button {
+            background: black;
+            color: white;
+            padding: 10px;
+            border: none;
+            width:60%;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+        button:hover {
+            background: gray;
+        }
+        p {
+            text-align: left;
+            margin: 5px 0;
+        }
+        .radio-inline {
+            display: flex;
+            gap: 6px;
+            align-items: center;
+        }
+    </style>
+</head>
+<body>
+
+<div class="registration-container">
+    <h2>Registration Form</h2>
+    <form id="registrationForm">
+        <input type="text" id="name" placeholder="Name" required>
+        <input type="email" id="email" placeholder="Email ID" required>
+        <input type="text" id="mobile" placeholder="Mobile Number (10 digits)" pattern="\d{10}" required>
+        <textarea id="address" placeholder="Address" required></textarea>
+        <p>City:</p>
+        <select id="city" onchange="checkCustomCity()">
+            <option value="Pune">Pune</option>
+            <option value="Mumbai">Mumbai</option>
+            <option value="Hyderabad">Hyderabad</option>
+            <option value="Bangalore">Bangalore</option>
+            <option value="other">Other (Specify Below)</option>
+        </select>
+        <input type="text" id="customCity" placeholder="Enter your city" style="display: none;">
+        <input type="text" id="hobbies" placeholder="Hobbies" required>
+        <p>Gender:</p>
+        <div class="radio-inline">
+            <input type="radio" name="gender" value="Male" required> Male
+            <input type="radio" name="gender" value="Female"> Female
+            <input type="radio" name="gender" value="Rather not say"> Rather not  say
+        </div>
+        <button type="submit">Submit</button>
+    </form>
+</div>
+
+
+<script>
+    document.getElementById("registrationForm").addEventListener("submit", function(event) {
+        event.preventDefault();
+    
+        let city = document.getElementById("city").value;
+        if (city === "other") {
+            city = document.getElementById("customCity").value;
+        }
+    
+        let formData = {
+            name: document.getElementById("name").value,
+            email: document.getElementById("email").value,
+            mobile: document.getElementById("mobile").value,
+            address: document.getElementById("address").value,
+            city: city,
+            hobbies: document.getElementById("hobbies").value,
+            gender: document.querySelector('input[name="gender"]:checked').value
+        };
+    
+        
+        fetch("display.html", {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify(formData)
+        }).then(() => {
+            let entries = JSON.parse(localStorage.getItem("registrations")) || [];
+            entries.push(formData);
+            localStorage.setItem("registrations", JSON.stringify(entries));
+    
+            window.location.href = "display.html"; // Redirect to display page
+        }).catch(error => console.error("Error:", error));
+    });
+    </script>
+    
+
+
+</body>
+</html>
